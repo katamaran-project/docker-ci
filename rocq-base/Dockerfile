@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 LABEL maintainer="steven.keuchel@gmail.com"
 
 # Install system packages
@@ -8,15 +8,15 @@ RUN apt-get update -yq \
 && apt-get clean \
 && rm -fr /var/lib/apt/lists/*
 
-# Add coq user and drop root
-RUN useradd -lmU -s /bin/bash -G sudo -p '' coq
-WORKDIR /home/coq
-USER coq
+# Add rocq user and drop root
+RUN useradd -lmU -s /bin/bash -G sudo -p '' rocq
+WORKDIR /home/rocq
+USER rocq
 
 # Install common packages
 RUN set -x \
 && opam init -j$(nproc) --compiler ocaml-system --auto-setup --yes --disable-completion --disable-sandboxing \
-&& opam repo add --all-switches --set-default coq-released https://coq.inria.fr/opam/released \
+&& opam repo add --all-switches --set-default rocq-released https://rocq-prover.org/opam/released \
 && opam install -vyj$(nproc) dune num ocamlfind zarith conf-findutils conf-gmp opam-depext \
 && opam clean -acrs --logs \
 && opam config list && opam list

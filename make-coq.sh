@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -ex
 
-docker build --pull --squash -t ghcr.io/katamaran-project/coq:base base
+docker build --pull --squash -t ghcr.io/katamaran-project/coq:base coq-base
 docker image push ghcr.io/katamaran-project/coq:base
 
-for conf in $(jq -c '.[]' versions.json); do
+for conf in $(jq -c '.[]' coq-versions.json); do
 	coqversion=$(echo "${conf}" | jq -r '.coq')
 	irisversions=$(echo "${conf}" | jq -c '.iris')
 	equationsversions=$(echo "${conf}" | jq -c '.equations')
